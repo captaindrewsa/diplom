@@ -24,18 +24,18 @@ impl Compartment{
         self.name.clone()
     }
 
-    pub fn get_sub(&mut self)->&Vec<std::rc::Weak<RefCell<Compartment>>> {
+    fn get_sub(&mut self)->&Vec<std::rc::Weak<RefCell<Compartment>>> {
         &self.sub_comp
     }
 
-    pub fn get_par(&mut self)-> &Option<std::rc::Weak<RefCell<Compartment>>>{
+    fn get_par(&mut self)-> &Option<std::rc::Weak<RefCell<Compartment>>>{
         &self.par_comp
     }
 
     pub fn compile(&mut self){
-        for substance in self.enzymes.iter(){
-            let name_substrat_product = database::get_reactions_db().unwrap()[substance].clone();
-            if name_substrat_product[1].iter().all(|sub| {
+        for substance in self.enzymes.iter(){ //Перебираем все энзимы в компартменте
+            let substrat_product = database::get_reactions_db().unwrap()[substance].clone(); //Запрашиваем реакцию для энзима
+            if substrat_product[0].iter().all(|sub| {
                 if sub.ends_with("IN"){
                     self.compounds.contains(&sub[..sub.len()-3].to_string())
                 } else if sub.ends_with("UT"){
@@ -51,7 +51,7 @@ impl Compartment{
                     false
                 }
             }){
-                for product in name_substrat_product[2].iter(){
+                for product in substrat_product[1].iter(){
                     if product.ends_with("IN"){
                         self.compounds.push(product[..product.len()-3].to_string());
                     } else {
@@ -66,7 +66,7 @@ impl Compartment{
                     }
                 }
             } else {
-                println!("Для '{}' не хватает входных параметров:\n{:?}", substance, name_substrat_product[1]);
+                println!("Для '{}' не хватает входных параметров:\n{:?}", substance, substrat_product[0]);
             }
         }
     }
