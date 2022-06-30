@@ -55,7 +55,7 @@ impl GeneSys {
             tmp.push_str(format!("Имя:{}\nСостав:\n\tЭнзимы:{:?}\n\tКомпаунды:{:?}\n{}\n",name,enzymes,compounds, raz).as_str());
             out.push_str(&tmp);
         }
-        print!("{}",out);
+        println!("{}",out);
     }
 
     fn merge_par_and_sub(&mut self, par: &str, sub: &str){

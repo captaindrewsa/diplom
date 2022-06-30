@@ -32,7 +32,21 @@ pub fn create_reactions_tree(compound: &str) -> Result<()>{
     let path_to_tree = "db/reactions_tree.csv";
     let mut file_tree = File::create(path_to_tree)?;
     let mut file_reactions = get_reactions_db().unwrap();
-    
+    /*
+    let target : Vec<Vec<String>>; <-Compound в начале
+    let bufer : Vec<Vec<String>>;
+    for (eznym, reaction) in reactions{
+        if reaction.product.iter().all(|prod| {
+            if target.iter().all(|comps|{
+                if comps.contains(prod){
+                    
+                }
+            })
+        }){
+            todo!()
+        }
+    }
+    */
 
 
 

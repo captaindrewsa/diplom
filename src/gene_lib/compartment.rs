@@ -40,7 +40,7 @@ impl Compartment{
                     self.compounds.contains(&sub[..sub.len()-3].to_string())
                 } else if sub.ends_with("UT"){
                     self.par_comp
-                    .clone()
+                    .as_mut()
                     .unwrap()
                     .upgrade()
                     .unwrap()
@@ -54,15 +54,17 @@ impl Compartment{
                 for product in substrat_product[1].iter(){
                     if product.ends_with("IN"){
                         self.compounds.push(product[..product.len()-3].to_string());
-                    } else {
+                    } else if product.ends_with("UT") {
                         self.par_comp
-                            .clone()
+                            .as_ref()
                             .unwrap()
                             .upgrade()
                             .unwrap()
                             .take()
                             .compounds
                             .push(product[..product.len()-3].to_string());
+                    } else {
+                        println!("Окончания в бд неверные");
                     }
                 }
             } else {
