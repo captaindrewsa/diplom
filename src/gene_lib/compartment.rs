@@ -1,8 +1,7 @@
 use std::{
     cell::RefCell,
-    ops::Deref,
     path::Component,
-    rc::{Rc, Weak},
+    rc::{Rc, Weak}, ops::Deref,
 };
 
 use super::database;
@@ -42,15 +41,13 @@ impl Compartment {
             self.compounds.contains(&sub[..sub.len() - 3].to_string())
         } else if sub.ends_with("UT") {
             self.par_comp
-                .clone()
-                .unwrap()
-                .upgrade()
-                .unwrap()
-                .try_borrow_mut()
-                .ok()
-                .unwrap()
-                .compounds
-                .contains(&sub[..sub.len() - 3].to_string())
+            .clone()
+            .unwrap()
+            .upgrade()
+            .unwrap()
+            .try_borrow_mut().ok()
+            .unwrap()
+            .compounds.contains(&sub[..sub.len() - 3].to_string())
         } else {
             false
         }
@@ -74,11 +71,9 @@ impl Compartment {
                             .unwrap()
                             .upgrade()
                             .unwrap()
-                            .try_borrow_mut()
-                            .ok()
+                            .try_borrow_mut().ok()
                             .unwrap()
-                            .compounds
-                            .push(product[..product.len() - 3].to_string());
+                            .compounds.push(product[..product.len()-3].to_string());
                     } else {
                         println!("Окончания в бд неверные");
                     }
