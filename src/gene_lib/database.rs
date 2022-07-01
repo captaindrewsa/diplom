@@ -2,19 +2,27 @@
 // use mysql::prelude::*;
 // use mysql::Opts;
 // use mysql::serde::de::Error;
-use std::{fs::{self, File}, io::{Read, Result}, collections::HashMap};
+use std::{
+    collections::HashMap,
+    fs::{self, File},
+    io::{Read, Result},
+};
 
-pub fn get_reactions_db()-> Result<HashMap<String, Vec<Vec<String>>>>{
+pub fn get_reactions_db() -> Result<HashMap<String, Vec<Vec<String>>>> {
     let mut content = String::new(); //Создаем Стринг для данных из файла
-    File::open("/home/captaindrewsa/Programming/Rust/diplom/src/gene_lib/db/reactions.csv")?.read_to_string(&mut content)?; //Переносим данные в строку
-    let content : Vec<&str> = content.split("\n").collect();    // -> ["EnzymeCode, Substrat, Product"]
+    File::open("/home/captaindrewsa/Programming/Rust/diplom/src/gene_lib/db/reactions.csv")?
+        .read_to_string(&mut content)?; //Переносим данные в строку
+    let content: Vec<&str> = content.split("\n").collect(); // -> ["EnzymeCode, Substrat, Product"]
     let mut otp: HashMap<String, Vec<Vec<String>>> = HashMap::new(); // Хотим так -> "EnzymeCode" : ["Substrat", "Product"]
-    for stroka in content{ //Бегаем построчно...
+    for stroka in content {
+        //Бегаем построчно...
         let temporary: Vec<&str> = stroka.split(",").collect(); // -> ["EnzymeCode", "Substrat", "Product"]
         let mut otp_hm: Vec<Vec<String>> = Vec::new(); //Хранилище для Substrate и Product
-        for (idx, elem) in temporary.iter().enumerate(){
-            if idx == 1 || idx == 2 { //Если субстрат или продукт:
-                let tmp_elem :Vec<String> = elem.split(";")
+        for (idx, elem) in temporary.iter().enumerate() {
+            if idx == 1 || idx == 2 {
+                //Если субстрат или продукт:
+                let tmp_elem: Vec<String> = elem
+                    .split(";")
                     .into_iter()
                     .map(|rstr| rstr.to_string())
                     .collect(); // Переводим "C00001;C00002" в ["C00001", "C00002"]
@@ -28,7 +36,7 @@ pub fn get_reactions_db()-> Result<HashMap<String, Vec<Vec<String>>>>{
     Ok(otp) //Возвращаем словарь с Энзим - Субстрт/Продукт
 }
 
-pub fn create_reactions_tree(compound: &str) -> Result<()>{
+pub fn create_reactions_tree(compound: &str) -> Result<()> {
     let path_to_tree = "db/reactions_tree.csv";
     let mut file_tree = File::create(path_to_tree)?;
     let mut file_reactions = get_reactions_db().unwrap();
@@ -39,7 +47,7 @@ pub fn create_reactions_tree(compound: &str) -> Result<()>{
         if reaction.product.iter().all(|prod| {
             if target.iter().all(|comps|{
                 if comps.contains(prod){
-                    
+
                 }
             })
         }){
@@ -48,18 +56,8 @@ pub fn create_reactions_tree(compound: &str) -> Result<()>{
     }
     */
 
-
-
-
-
-
     Ok(())
-
 }
-
-
-
-
 
 // #[derive(Debug)]
 // struct Enzyme{
@@ -68,7 +66,6 @@ pub fn create_reactions_tree(compound: &str) -> Result<()>{
 //     Subsrat: String,
 //     Product: String
 // }
-
 
 // pub fn test_fn() -> Result<mysql::PooledConn>{
 //     let url = "mysql://root:Asavoz76Vlas5712Drewsa_Bad@localhost:3306/enzyme";
@@ -79,7 +76,7 @@ pub fn create_reactions_tree(compound: &str) -> Result<()>{
 
 //     let pool = Pool::new(Opts::from_url(url)?).expect("Не приконектилось");
 //     let mut conn = pool.get_conn()?;
-    
+
 //     conn.query_drop(
 //         "USE enzyme;"
 //     )?;
