@@ -21,6 +21,7 @@ impl GeneSys {
             let tmp = Rc::new(RefCell::new(Compartment::new(name)));
             self.storage.push(Rc::downgrade(&tmp));
             self.obj_storage.push(tmp);
+            /*Нужно хранить сторадж самих объектов и отдельно сторадж ссылок*/
         }
     }
     pub fn create_tree(&mut self, tree: Vec<(&str, Vec<&str>)>) {
