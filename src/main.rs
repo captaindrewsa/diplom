@@ -1,5 +1,5 @@
 mod gene_lib;
-use diplom::gene_lib::{compartment, database::{self, find_reactions_for_buffer}, main_system::GeneSys};
+use diplom::gene_lib::{compartment, database::{self, create_reactions_tree}, main_system::GeneSys};
 
 fn main() {
     // let mut sys = GeneSys::default();
@@ -12,6 +12,6 @@ fn main() {
     // sys.add_substance_to_compartment("Клетка", "C00001");
     // sys.compile();
     // sys.print_result();
-    let test = find_reactions_for_buffer(vec!["C00009"]);
-    println!("{:?}", test);
+    // println!("{:?}",get_substrat_from_reactions("EC 3.1.3.48".to_string()));
+    println!("{:?}", create_reactions_tree(vec!["C1"]).unwrap());
 }
