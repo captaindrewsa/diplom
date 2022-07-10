@@ -13,5 +13,5 @@ fn main() {
     // sys.compile();
     // sys.print_result();
     // println!("{:?}",get_substrat_from_reactions("EC 3.1.3.48".to_string()));
-    println!("{:?}", create_reactions_tree_light(vec!["C1"]).unwrap());
+    println!("{:?}", create_reactions_tree_light(vec!["C2"]).unwrap());
 }

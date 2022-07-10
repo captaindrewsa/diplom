@@ -37,6 +37,9 @@ pub fn get_reactions_db() -> Result<BTreeMap<String, Vec<Vec<String>>>> {
 }
 
 pub fn create_reactions_tree_light(compounds: Vec<&str>) -> Option<Vec<String>> {
+    /*
+    Функция создает дерево функций, необходимых для синтеза конечного списка веществ
+    */
     let mut output_reactions: Vec<String> = Vec::new();
     let mut reaction_buff: String = String::new();
     let mut comp_buff: Vec<String> = add_three_symbols(compounds);
@@ -51,6 +54,7 @@ pub fn create_reactions_tree_light(compounds: Vec<&str>) -> Option<Vec<String>> 
         }
         if let Some(substrats) = get_substrat_from_reactions(reaction_buff.clone()){
             comp_buff = substrats.clone().iter().map(|s| s.to_string()).collect();
+            
         } else { 
             break;
         }
