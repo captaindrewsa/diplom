@@ -40,25 +40,31 @@ pub fn create_reactions_tree_light(compounds: Vec<&str>) -> Option<Vec<String>> 
     /*
     Функция создает дерево функций, необходимых для синтеза конечного списка веществ
     */
+    
     let mut output_reactions: Vec<String> = Vec::new();
     let mut reaction_buff: String = String::new();
-    let mut comp_buff: Vec<String> = add_three_symbols(compounds);
+    let mut comp_buff: Vec<String> = add_three_symbols(compounds.clone());
     
     loop {
         if let Some(reactions) = find_reactions_for_buffer(comp_buff.clone()){
             output_reactions.push(reactions.clone());
             reaction_buff = reactions.clone();
+            if get_diff_bool(compounds.clone(), comp_buff.clone()){
+                break;
+            }
             // println!("{}",reactions.clone());
         } else {
             break;
         }
         if let Some(substrats) = get_substrat_from_reactions(reaction_buff.clone()){
             comp_buff = substrats.clone().iter().map(|s| s.to_string()).collect();
-            
+            if get_diff_bool(compounds.clone(), comp_buff.clone()){
+                break;
+            }
+            // println!("{:?}",substrats.clone());
         } else { 
             break;
         }
-
     }
     if !output_reactions.is_empty(){
         Some(vec![output_reactions.join("<-"), comp_buff.join(";")])
@@ -140,10 +146,21 @@ fn add_three_symbols(stroka: Vec<&str>)-> Vec<String>{
     let mut output_stroka: Vec<String>= Vec::new();
     for elem in tmp{
         let mut elem_tmp = elem.clone();
-        elem_tmp.push_str("000");
+        elem_tmp.push_str("```");
         output_stroka.push(elem_tmp);
     }
     return output_stroka;
+}
+
+fn get_diff_bool(compounds: Vec<&str>, comp_buffer: Vec<String>)-> bool{
+    let hs_compounds  = add_vec_to_set(compounds.iter().map(|elem|{elem.to_string()}).collect());
+    let hs_comp_buff = add_vec_to_set(comp_buffer.iter().map(|elem| {elem[0..elem.len()-3].to_string()}).collect());
+    let diff: Vec<&String> = hs_comp_buff.difference(&hs_compounds).collect();
+    if diff.is_empty(){
+        true
+    } else {
+        false
+    }
 }
 
 
